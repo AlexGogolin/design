@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DoubleDesign — Бриф на дизайн интерьера</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f6f3ee;
+  --card:#ffffff;
+  --ink:#21232a;
+  --muted:#8b8d95;
+  --accent:#c29a5b;
+  --accent-dark:#a37f45;
+  --line:#e5e0d6;
+  --check-bg:#faf7f1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Manrope',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+}
+.container{max-width:880px;margin:0 auto;padding:0 20px}
+
+/* ===== HEADER ===== */
+header.hero{
+  padding:70px 0 50px;
+  text-align:center;
+  background:
+    radial-gradient(1200px 400px at 50% -100px, rgba(194,154,91,.18), transparent 70%),
+    var(--bg);
+  border-bottom:1px solid var(--line);
+}
+.hero .brand{
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  font-size:13px;
+  color:var(--accent-dark);
+  font-weight:600;
+  margin-bottom:18px;
+}
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(34px,6vw,56px);
+  font-weight:600;
+  line-height:1.12;
+  margin-bottom:16px;
+}
+.hero p.sub{
+  max-width:620px;margin:0 auto;color:var(--muted);font-size:16px;
+}
+.hero .divider{width:64px;height:2px;background:var(--accent);margin:26px auto 0}
+
+/* ===== PROGRESS ===== */
+.progress-wrap{
+  position:sticky;top:0;z-index:50;background:rgba(246,243,238,.92);
+  backdrop-filter:blur(6px);border-bottom:1px solid var(--line);
+}
+.progress-bar{height:4px;background:var(--line)}
+.progress-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#e0be84);transition:width .3s}
+.progress-label{font-size:12px;color:var(--muted);text-align:center;padding:6px 0}
+
+/* ===== SECTIONS / CARDS ===== */
+section.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:34px 36px;
+  margin:26px 0;
+  box-shadow:0 2px 14px rgba(33,35,42,.04);
+}
+section.card > .sec-num{
+  display:inline-block;font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent-dark);font-weight:700;margin-bottom:8px;
+}
+section.card h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:30px;font-weight:600;margin-bottom:4px;
+}
+section.card .hint{color:var(--muted);font-size:14px;margin-bottom:22px}
+fieldset{border:none;margin:0 0 26px}
+fieldset:last-child{margin-bottom:0}
+legend,.group-title{
+  font-weight:700;font-size:16px;margin-bottom:12px;display:block;
+  padding-top:6px;
+}
+legend small,.group-title small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
+.desc{font-size:13px;color:var(--muted);margin:-6px 0 14px;max-width:640px}
+
+/* checkbox grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.grid.two{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border:1px solid var(--line);border-radius:10px;
+  cursor:pointer;user-select:none;background:#fff;transition:.15s;
+  font-size:14.5px;
+}
+.opt:hover{border-color:var(--accent)}
+.opt input{appearance:none;-webkit-appearance:none;flex:0 0 18px;width:18px;height:18px;margin-top:1px;
+  border:1.5px solid #c9c4b8;border-radius:4px;cursor:pointer;position:relative;background:#fff;transition:.15s}
+.opt input:checked{background:var(--accent);border-color:var(--accent)}
+.opt input:checked::after{content:"✓";position:absolute;color:#fff;font-size:13px;left:2px;top:-3px;font-weight:700}
+.opt:has(input:checked){border-color:var(--accent);background:var(--check-bg)}
+.opt textarea{margin-top:6px}
+
+/* radio pills */
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{
+  display:flex;align-items:center;gap:8px;padding:9px 16px;border:1px solid var(--line);
+  border-radius:999px;cursor:pointer;font-size:14px;background:#fff;transition:.15s;user-select:none;
+}
+.pill:hover{border-color:var(--accent)}
+.pill input{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1.5px solid #c9c4b8;border-radius:50%;position:relative;cursor:pointer}
+.pill input:checked{border-color:var(--accent);background:radial-gradient(circle,var(--accent) 45%,#fff 50%)}
+.pill:has(input:checked){border-color:var(--accent);background:var(--check-bg)}
+
+/* inputs */
+label.field{display:block;margin-bottom:14px}
+label.field .fname{font-size:13.5px;font-weight:600;margin-bottom:5px;display:block}
+label.field .fname small{font-weight:400;color:var(--muted)}
+input[type=text],input[type=email],input[type=number],input[type=date],textarea{
+  width:100%;padding:10px 13px;border:1px solid var(--line);border-radius:9px;
+  font-family:inherit;font-size:14.5px;background:#fff;color:var(--ink);transition:.15s;
+}
+textarea{min-height:70px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(194,154,91,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row.three{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:640px){.row,.row.three{grid-template-columns:1fr}}
+
+/* color chips */
+.colors{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.color-opt{
+  display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;
+  cursor:pointer;font-size:14px;background:#fff;transition:.15s;
+}
+.color-opt:hover{border-color:var(--accent)}
+.color-opt:has(input:checked){border-color:var(--accent);background:var(--check-bg)}
+.color-opt input{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1.5px solid #c9c4b8;border-radius:4px;position:relative;cursor:pointer;flex:0 0 16px}
+.color-opt input:checked{background:var(--accent);border-color:var(--accent)}
+.color-opt input:checked::after{content:"✓";position:absolute;color:#fff;font-size:11px;left:2px;top:-3px;font-weight:700}
+.swatch{width:20px;height:20px;border-radius:50%;border:1px solid rgba(0,0,0,.15);flex:0 0 20px}
+
+/* visits table */
+.visit-row{display:grid;grid-template-columns:1.4fr 1fr 1.6fr 36px;gap:10px;align-items:center;margin-bottom:10px}
+@media(max-width:640px){.visit-row{grid-template-columns:1fr 1fr}}
+.btn-add{
+  background:none;border:1px dashed var(--accent);color:var(--accent-dark);border-radius:9px;
+  padding:9px 18px;font-family:inherit;font-size:14px;cursor:pointer;font-weight:600;
+}
+.btn-add:hover{background:var(--check-bg)}
+.btn-del{background:none;border:none;color:#c0392b;font-size:20px;cursor:pointer;line-height:1;border-radius:6px;padding:4px 8px}
+.btn-del:hover{background:#fbeae8}
+
+/* footer download */
+.download-zone{text-align:center;padding:50px 0 90px}
+.dl-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,var(--ink),#3a3d47);
+  color:#fff;border:none;border-radius:12px;padding:18px 44px;
+  font-family:inherit;font-size:17px;font-weight:700;letter-spacing:.02em;cursor:pointer;
+  box-shadow:0 10px 30px rgba(33,35,42,.25);transition:.2s;
+}
+.dl-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(33,35,42,.32)}
+.dl-btn svg{width:20px;height:20px}
+.dl-note{margin-top:14px;color:var(--muted);font-size:13px}
+
+footer.copyright{text-align:center;color:var(--muted);font-size:12.5px;padding:0 0 40px}
+
+@media(max-width:640px){
+  section.card{padding:24px 18px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <div class="brand">Double Design</div>
+    <h1>Бриф на дизайн интерьера</h1>
+    <p class="sub">Ответьте на вопросы этого брифа — отметьте нужное галочками и впишите свои пожелания.
+    В конце нажмите «Скачать ответы», чтобы сохранить заполненный бриф в PDF.</p>
+    <div class="divider"></div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><span id="progFill"></span></div>
+  <div class="progress-label" id="progLabel">Заполнено: 0 / 0</div>
+</div>
+
+<main class="container" id="form">
+
+  <!-- ============ 1. СТИЛЬ ============ -->
+  <section class="card" data-title="Выбираем стиль">
+    <span class="sec-num">Раздел 1</span>
+    <h2>Выбираем стиль</h2>
+    <p class="hint">Элементы каких стилей вам нравятся? Отметьте галочками всё, что откликается.</p>
+
+    <div class="grid two">
+      <label class="opt"><input type="checkbox" data-q="Стиль: Неоклассика"><span>Неоклассика</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Арт-деко"><span>Арт-деко</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Лофт"><span>Лофт</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Парижский стиль"><span>Парижский стиль</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Классика"><span>Классика</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Американский"><span>Американский</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Эклектика"><span>Эклектика</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Минимализм"><span>Минимализм</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Яркие интерьеры"><span>Яркие интерьеры</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Скандинавский стиль"><span>Скандинавский стиль</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Современный стиль"><span>Современный стиль</span></label>
+      <label class="opt"><input type="checkbox" data-q="Стиль: Другое"><span>Другое (впишите)</span></label>
+    </div>
+    <div style="margin-top:14px">
+      <label class="field"><span class="fname">Другие стили / комментарии</span>
+        <input type="text" data-q="Стиль: комментарии" placeholder="Например: japandi, mid-century…"></label>
+    </div>
+  </section>
+
+  <!-- ============ 2. ПЛАНИРОВКА ============ -->
+  <section class="card" data-title="Планировочное решение">
+    <span class="sec-num">Раздел 2</span>
+    <h2>Планировочное решение</h2>
+    <p class="hint">Отметьте помещения, которые необходимо спроектировать.</p>
+
+    <fieldset><legend class="group-title">Помещения</legend>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Помещения: Прихожая"><span>Прихожая</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Ванная комната"><span>Ванная комната</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Холл"><span>Холл</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Комната персонала"><span>Комната персонала</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Кухня"><span>Кухня</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Постирочная"><span>Постирочная</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Столовая"><span>Столовая</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Кладовая"><span>Кладовая</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Гостиная"><span>Гостиная</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Гардеробная"><span>Гардеробная</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Спальня"><span>Спальня</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Холодильная комната"><span>Холодильная комната</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Детская"><span>Детская</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Веранда"><span>Веранда</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Игровая"><span>Игровая</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Котельная"><span>Котельная</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Кабинет"><span>Кабинет</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Зимний сад"><span>Зимний сад</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Гостевая"><span>Гостевая</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Терраса"><span>Терраса</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Гостевой санузел"><span>Гостевой санузел</span></label>
+        <label class="opt"><input type="checkbox" data-q="Помещения: Другие помещения"><span>Другие помещения</span></label>
+      </div>
+    </fieldset>
+
+    <label class="field"><span class="fname">Пожелания по объединению зон <small>(например, кухня-гостиная)</small></span>
+      <textarea data-q="Пожелания по объединению зон"></textarea></label>
+
+    <fieldset><legend class="group-title">Должна ли перепланировка быть согласована в БТИ?</legend>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="bti" data-q="Согласование БТИ"><span>Да</span></label>
+        <label class="pill"><input type="radio" name="bti" data-q="Согласование БТИ"><span>Нет</span></label>
+        <label class="pill"><input type="radio" name="bti" data-q="Согласование БТИ"><span>Не знаю</span></label>
+      </div>
+    </fieldset>
+
+    <label class="field"><span class="fname">Укажите размеры кухни</span>
+      <input type="text" data-q="Размеры кухни" placeholder="Например: 3,5 × 4,2 м, высота потолка 2,7 м"></label>
+  </section>
+
+  <!-- ============ 3. ГОСТИНАЯ ============ -->
+  <section class="card" data-title="Гостиная">
+    <span class="sec-num">Раздел 3</span>
+    <h2>Гостиная</h2>
+    <p class="hint">Отметьте необходимые предметы и опишите пожелания.</p>
+    <div class="grid">
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Диван"><span>Диван</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Пуфы"><span>Пуфы</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Кресла"><span>Кресла</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Журнальный столик"><span>Журнальный столик</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Тумба ТВ"><span>Тумба ТВ</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Консоль"><span>Консоль</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Библиотека / стеллажи"><span>Библиотека / стеллажи</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Аквариум"><span>Аквариум</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Полки"><span>Полки</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Камин / биокамин"><span>Камин / биокамин</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Телевизор"><span>Телевизор</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Обеденная группа"><span>Обеденная группа</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Ковер"><span>Ковер</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостиная: Зеркало"><span>Зеркало</span></label>
+    </div>
+    <div style="margin-top:16px">
+      <div class="row">
+        <label class="field"><span class="fname">Диван <small>(размер, раскладка)</small></span><input type="text" data-q="Гостиная: Диван (описание)"></label>
+        <label class="field"><span class="fname">Кровать / диван для сна <small>(если нужно)</small></span><input type="text" data-q="Гостиная: спальное место"></label>
+      </div>
+      <label class="field"><span class="fname">Шкаф <small>(размер, наличие зеркал)</small></span><input type="text" data-q="Гостиная: Шкаф (описание)"></label>
+      <label class="field"><span class="fname">Дополнительные предметы <small>(укажите, чего вам не хватает)</small></span><textarea data-q="Гостиная: Дополнительные предметы"></textarea></label>
+      <label class="field"><span class="fname">Особые пожелания</span><textarea data-q="Гостиная: Особые пожелания"></textarea></label>
+    </div>
+  </section>
+
+  <!-- ============ 4. ПРИХОЖАЯ ============ -->
+  <section class="card" data-title="Прихожая">
+    <span class="sec-num">Раздел 4</span>
+    <h2>Прихожая</h2>
+    <p class="hint">Отметьте необходимые предметы и опишите пожелания.</p>
+    <div class="grid">
+      <label class="opt"><input type="checkbox" data-q="Прихожая: Пуфы"><span>Пуфы</span></label>
+      <label class="opt"><input type="checkbox" data-q="Прихожая: Тумба ТВ"><span>Тумба ТВ</span></label>
+      <label class="opt"><input type="checkbox" data-q="Прихожая: Консоль"><span>Консоль</span></label>
+      <label class="opt"><input type="checkbox" data-q="Прихожая: Библиотека / стеллажи"><span>Библиотека / стеллажи</span></label>
+      <label class="opt"><input type="checkbox" data-q="Прихожая: Аквариум"><span>Аквариум</span></label>
+      <label class="opt"><input type="checkbox" data-q="Прихожая: Полки"><span>Полки</span></label>
+    </div>
+    <div style="margin-top:16px">
+      <label class="field"><span class="fname">Шкаф <small>(размер, наличие зеркал)</small></span><input type="text" data-q="Прихожая: Шкаф (описание)"></label>
+      <label class="field"><span class="fname">Открытые вешалки под одежду <small>(форма, размер)</small></span><input type="text" data-q="Прихожая: Открытые вешалки (описание)"></label>
+      <label class="field"><span class="fname">Гардеробная <small>(описание, пожелания)</small></span><input type="text" data-q="Прихожая: Гардеробная (описание)"></label>
+      <label class="field"><span class="fname">Дополнительные предметы <small>(укажите, чего вам не хватает)</small></span><textarea data-q="Прихожая: Дополнительные предметы"></textarea></label>
+    </div>
+  </section>
+
+  <!-- ============ 5. ИГРОВАЯ ============ -->
+  <section class="card" data-title="Игровая">
+    <span class="sec-num">Раздел 5</span>
+    <h2>Игровая</h2>
+    <p class="hint">Отметьте необходимые предметы и опишите пожелания.</p>
+    <div class="grid">
+      <label class="opt"><input type="checkbox" data-q="Игровая: Диван"><span>Диван</span></label>
+      <label class="opt"><input type="checkbox" data-q="Игровая: Пуфы"><span>Пуфы</span></label>
+      <label class="opt"><input type="checkbox" data-q="Игровая: Шкаф"><span>Шкаф</span></label>
+      <label class="opt"><input type="checkbox" data-q="Игровая: Качели"><span>Качели</span></label>
+      <label class="opt"><input type="checkbox" data-q="Игровая: Стеллажи"><span>Стеллажи</span></label>
+      <label class="opt"><input type="checkbox" data-q="Игровая: Полки"><span>Полки</span></label>
+      <label class="opt"><input type="checkbox" data-q="Игровая: Кинотеатр"><span>Кинотеатр</span></label>
+      <label class="opt"><input type="checkbox" data-q="Игровая: Рабочее место"><span>Рабочее место</span></label>
+      <label class="opt"><input type="checkbox" data-q="Игровая: Телевизор"><span>Телевизор</span></label>
+    </div>
+    <div style="margin-top:16px">
+      <div class="row">
+        <label class="field"><span class="fname">Игровой домик <small>(размер, описание)</small></span><input type="text" data-q="Игровая: Игровой домик (описание)"></label>
+        <label class="field"><span class="fname">Спортивный уголок <small>(размер, описание)</small></span><input type="text" data-q="Игровая: Спортивный уголок (описание)"></label>
+      </div>
+      <label class="field"><span class="fname">Тумбы прикроватные <small>(форма, размер)</small></span><input type="text" data-q="Игровая: Тумбы прикроватные (описание)"></label>
+      <label class="field"><span class="fname">Дополнительные предметы <small>(укажите, чего вам не хватает)</small></span><textarea data-q="Игровая: Дополнительные предметы"></textarea></label>
+      <label class="field"><span class="fname">Особые пожелания</span><textarea data-q="Игровая: Особые пожелания"></textarea></label>
+    </div>
+  </section>
+
+  <!-- ============ 6. СПАЛЬНЯ ============ -->
+  <section class="card" data-title="Спальня">
+    <span class="sec-num">Раздел 6</span>
+    <h2>Спальня</h2>
+    <p class="hint">Отметьте необходимые предметы и опишите пожелания.</p>
+    <div class="grid">
+      <label class="opt"><input type="checkbox" data-q="Спальня: Прикроватные тумбы"><span>Прикроватные тумбы</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Тумба ТВ"><span>Тумба ТВ</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Консоль"><span>Консоль</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Библиотека"><span>Библиотека</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Полки"><span>Полки</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Туалетный стол"><span>Туалетный стол</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Камин / биокамин"><span>Камин / биокамин</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Телевизор"><span>Телевизор</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Рабочее место"><span>Рабочее место</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Комод"><span>Комод</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Банкетка"><span>Банкетка</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Зеркала"><span>Зеркала</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Ковер / ковролин"><span>Ковер / ковролин</span></label>
+      <label class="opt"><input type="checkbox" data-q="Спальня: Мини-бар"><span>Мини-бар</span></label>
+    </div>
+    <div style="margin-top:16px">
+      <div class="row">
+        <label class="field"><span class="fname">Кровать <small>(размер, кол-во, второй уровень)</small></span><input type="text" data-q="Спальня: Кровать (описание)"></label>
+        <label class="field"><span class="fname">Шкаф <small>(размер)</small></span><input type="text" data-q="Спальня: Шкаф (описание)"></label>
+      </div>
+      <label class="field"><span class="fname">Гардеробная <small>(описание, пожелания)</small></span><input type="text" data-q="Спальня: Гардеробная (описание)"></label>
+      <label class="field"><span class="fname">Дополнительные предметы <small>(укажите, чего вам не хватает)</small></span><textarea data-q="Спальня: Дополнительные предметы"></textarea></label>
+      <label class="field"><span class="fname">Особые пожелания</span><textarea data-q="Спальня: Особые пожелания"></textarea></label>
+    </div>
+  </section>
+
+  <!-- ============ 7. ГОСТЕВАЯ ============ -->
+  <section class="card" data-title="Гостевая">
+    <span class="sec-num">Раздел 7</span>
+    <h2>Гостевая</h2>
+    <p class="hint">Отметьте необходимые предметы и опишите пожелания.</p>
+    <div class="grid">
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Кровать"><span>Кровать</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Кресло"><span>Кресло</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Рабочее место"><span>Рабочее место</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Тумбы"><span>Тумбы</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Стеллажи"><span>Стеллажи</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Полки"><span>Полки</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Телевизор"><span>Телевизор</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Мини-бар"><span>Мини-бар</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Ковер"><span>Ковер</span></label>
+      <label class="opt"><input type="checkbox" data-q="Гостевая: Туалетный стол"><span>Туалетный стол</span></label>
+    </div>
+    <div style="margin-top:16px">
+      <div class="row three">
+        <label class="field"><span class="fname">Диван <small>(размер, раскладка)</small></span><input type="text" data-q="Гостевая: Диван (описание)"></label>
+        <label class="field"><span class="fname">Кровать <small>(размер, количество)</small></span><input type="text" data-q="Гостевая: Кровать (описание)"></label>
+        <label class="field"><span class="fname">Шкаф <small>(размер)</small></span><input type="text" data-q="Гостевая: Шкаф (описание)"></label>
+      </div>
+      <label class="field"><span class="fname">Дополнительные предметы <small>(укажите, чего вам не хватает)</small></span><textarea data-q="Гостевая: Дополнительные предметы"></textarea></label>
+    </div>
+  </section>
+
+  <!-- ============ 8. КЛАДОВАЯ / ПОСТИРОЧНАЯ ============ -->
+  <section class="card" data-title="Кладовая и постирочная">
+    <span class="sec-num">Раздел 8</span>
+    <h2>Кладовая · Постирочная</h2>
+    <p class="hint">Отметьте необходимое оборудование и хранение.</p>
+
+    <fieldset><legend class="group-title">Кладовая</legend>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Кладовая: Холодильник"><span>Холодильник</span></label>
+        <label class="opt"><input type="checkbox" data-q="Кладовая: Открытые полки"><span>Открытые полки</span></label>
+        <label class="opt"><input type="checkbox" data-q="Кладовая: Шкафы"><span>Шкафы</span></label>
+        <label class="opt"><input type="checkbox" data-q="Кладовая: Стеллажи"><span>Стеллажи</span></label>
+        <label class="opt"><input type="checkbox" data-q="Кладовая: Техника"><span>Техника</span></label>
+        <label class="opt"><input type="checkbox" data-q="Кладовая: Морозильная камера"><span>Морозильная камера</span></label>
+        <label class="opt"><input type="checkbox" data-q="Кладовая: Стиральная машина"><span>Стиральная машина</span></label>
+        <label class="opt"><input type="checkbox" data-q="Кладовая: Сушильная машина"><span>Сушильная машина</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset><legend class="group-title">Постирочная</legend>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Постирочная: Раскладная система для сушки"><span>Раскладная система для сушки</span></label>
+        <label class="opt"><input type="checkbox" data-q="Постирочная: Мойка"><span>Мойка</span></label>
+        <label class="opt"><input type="checkbox" data-q="Постирочная: Вешалки для одежды"><span>Вешалки для одежды</span></label>
+        <label class="opt"><input type="checkbox" data-q="Постирочная: Открытые полки"><span>Открытые полки</span></label>
+        <label class="opt"><input type="checkbox" data-q="Постирочная: Шкафы"><span>Шкафы</span></label>
+        <label class="opt"><input type="checkbox" data-q="Постирочная: Место для мытья домашних животных"><span>Специальное место для мытья домашних животных</span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <label class="field"><span class="fname">Гладильная доска <small>(выкатная, откидная, отдельностоящая)</small></span><input type="text" data-q="Гладильная доска"></label>
+      <label class="field"><span class="fname">Предпочтительный вид хранения <small>(открытые/закрытые полки, выдвижные ящики, выкатные секции)</small></span><input type="text" data-q="Вид хранения"></label>
+    </div>
+    <label class="field"><span class="fname">Принадлежности для уборки <small>(ведра, швабры, пылесос, паровая станция)</small></span><input type="text" data-q="Принадлежности для уборки"></label>
+    <label class="field"><span class="fname">Особые пожелания</span><textarea data-q="Кладовая/Постирочная: Особые пожелания"></textarea></label>
+  </section>
+
+  <!-- ============ 9. ВАННАЯ / САНУЗЕЛ ============ -->
+  <section class="card" data-title="Ванная и санузлы">
+    <span class="sec-num">Раздел 9</span>
+    <h2>Ванная · Санузел</h2>
+    <p class="hint">Отметьте наполнение для ванной комнаты и гостевого санузла.</p>
+
+    <fieldset><legend class="group-title">Ванная</legend>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Ванная: Унитаз"><span>Унитаз</span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Писсуар"><span>Писсуар</span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Биде / гигиенический душ"><span>Биде / гигиенический душ</span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Раковина / мебель"><span>Раковина / мебель</span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Ванна"><span>Ванна <em>(встроенная / отдельностоящая)</em></span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Душ"><span>Душ</span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Стиральная машина"><span>Стиральная машина</span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Сушильная машина"><span>Сушильная машина</span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Пенал"><span>Пенал</span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Смесители"><span>Смесители <em>(накладные на раковине / на мебели / встроенные в стену)</em></span></label>
+        <label class="opt"><input type="checkbox" data-q="Ванная: Душевая система"><span>Душевая система <em>(стойка / накладная / встроенная)</em></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset><legend class="group-title">Санузел (гостевой)</legend>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Санузел: Унитаз"><span>Унитаз</span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Писсуар"><span>Писсуар</span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Биде / гигиенический душ"><span>Биде / гигиенический душ</span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Раковина / мебель"><span>Раковина / мебель</span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Ванна"><span>Ванна <em>(встроенная / отдельностоящая)</em></span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Душ"><span>Душ</span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Стиральная машина"><span>Стиральная машина</span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Сушильная машина"><span>Сушильная машина</span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Пенал"><span>Пенал</span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Смесители"><span>Смесители <em>(накладные / встроенные в стену)</em></span></label>
+        <label class="opt"><input type="checkbox" data-q="Санузел: Душевая система"><span>Душевая система <em>(стойка / накладная / встроенная)</em></span></label>
+      </div>
+    </fieldset>
+
+    <label class="field"><span class="fname">Планируется ли косметическое зеркало с подсветкой в ванную комнату?</span>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="mirror" data-q="Косметическое зеркало с подсветкой"><span>Да</span></label>
+        <label class="pill"><input type="radio" name="mirror" data-q="Косметическое зеркало с подсветкой"><span>Нет</span></label>
+      </div>
+    </label>
+  </section>
+
+  <!-- ============ 10. ЦВЕТА ============ -->
+  <section class="card" data-title="Цвета в интерьере">
+    <span class="sec-num">Раздел 10</span>
+    <h2>Выбираем цвета</h2>
+    <p class="hint">Выберите цвета в интерьере, которые вам нравятся (отметьте галочками).</p>
+    <div class="colors">
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Белый"><span class="swatch" style="background:#ffffff"></span>Белый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Серый"><span class="swatch" style="background:#9e9e9e"></span>Серый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Чёрный"><span class="swatch" style="background:#232323"></span>Чёрный</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Бежевый"><span class="swatch" style="background:#e5d3b3"></span>Бежевый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Коричневый"><span class="swatch" style="background:#7a5230"></span>Коричневый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Синий"><span class="swatch" style="background:#2f5c9e"></span>Синий</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Голубой"><span class="swatch" style="background:#8fc1e3"></span>Голубой</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Зелёный"><span class="swatch" style="background:#4e7d4f"></span>Зелёный</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Оливковый"><span class="swatch" style="background:#808000"></span>Оливковый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Жёлтый"><span class="swatch" style="background:#eac54f"></span>Жёлтый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Оранжевый"><span class="swatch" style="background:#e0813c"></span>Оранжевый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Красный"><span class="swatch" style="background:#b23a3a"></span>Красный</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Розовый"><span class="swatch" style="background:#e8a6b8"></span>Розовый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Фиолетовый"><span class="swatch" style="background:#6b4f8f"></span>Фиолетовый</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Пастельные тона"><span class="swatch" style="background:linear-gradient(135deg,#f6d8d8,#d8e6f6)"></span>Пастельные</label>
+      <label class="color-opt"><input type="checkbox" data-q="Цвета: Монохром"><span class="swatch" style="background:linear-gradient(135deg,#fff 50%,#000 50%)"></span>Монохром</label>
+    </div>
+    <div style="margin-top:16px">
+      <label class="field"><span class="fname">Нравится ли вам сочетание нескольких цветов? Какие цвета точно НЕ использовать?</span>
+        <textarea data-q="Цвета: комментарии"></textarea></label>
+    </div>
+  </section>
+
+  <!-- ============ 11. ДЕКОР ============ -->
+  <section class="card" data-title="Декор">
+    <span class="sec-num">Раздел 11</span>
+    <h2>Какой декор вам нравится?</h2>
+    <p class="hint">Отметьте нужные варианты галочками.</p>
+    <div class="grid">
+      <label class="opt"><input type="checkbox" data-q="Декор: Зеркала"><span>Зеркала</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Мягкие панели"><span>Мягкие панели</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Декоративный свет"><span>Декоративный свет</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Цветы / растения"><span>Цветы / растения</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Лепнина"><span>Лепнина</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Ниши"><span>Ниши</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Обилие деталей"><span>Обилие деталей</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Минимализм / минимум декора"><span>Минимализм / минимум декора</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Картины"><span>Картины</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Арт-объекты"><span>Арт-объекты</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Статуэтки / статуи"><span>Статуэтки / статуи</span></label>
+      <label class="opt"><input type="checkbox" data-q="Декор: Необычный текстиль"><span>Необычный текстиль</span></label>
+    </div>
+  </section>
+
+  <!-- ============ 12. ОТДЕЛОЧНЫЕ МАТЕРИАЛЫ ============ -->
+  <section class="card" data-title="Отделочные материалы">
+    <span class="sec-num">Раздел 12</span>
+    <h2>Какие отделочные материалы вам нравятся?</h2>
+    <p class="hint">Отметьте нужные варианты галочками.</p>
+    <div class="grid">
+      <label class="opt"><input type="checkbox" data-q="Материалы: Обои"><span>Обои</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Камень"><span>Камень</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Мозаика"><span>Мозаика</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Молдинги из лепнины, гипса, полиуретана"><span>Молдинги (лепнина, гипс, полиуретан)</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Дерево"><span>Дерево</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Краска"><span>Краска</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Штукатурка"><span>Штукатурка</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Кирпич"><span>Кирпич</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Бетон"><span>Бетон</span></label>
+      <label class="opt"><input type="checkbox" data-q="Материалы: Декоративные панели"><span>Декоративные панели</span></label>
+    </div>
+  </section>
+
+  <!-- ============ 13. РАБОЧАЯ ДОКУМЕНТАЦИЯ ============ -->
+  <section class="card" data-title="Рабочая документация">
+    <span class="sec-num">Раздел 13</span>
+    <h2>Вопросы для подготовки рабочей документации</h2>
+    <p class="hint">Потолки, свет, электрика, вентиляция и инженерия.</p>
+
+    <fieldset><legend class="group-title">Потолки</legend>
+      <label class="field"><span class="fname">Принципиален ли для вас материал потолка (штукатурка, ГКЛ, натяжной)?</span>
+        <textarea data-q="Потолки: материал"></textarea></label>
+      <label class="field"><span class="fname">Какие потолки вам нравятся (лепнина, уровни, подсветка, покраска в другой оттенок, обои на потолке)?</span>
+        <textarea data-q="Потолки: пожелания"></textarea></label>
+    </fieldset>
+
+    <fieldset><legend class="group-title">Свет</legend>
+      <label class="field"><span class="fname">Вы любите яркое освещение или рассеянное, приглушённое?</span>
+        <input type="text" data-q="Свет: яркое или рассеянное"></label>
+      <div class="row">
+        <label class="field"><span class="fname">В каких зонах необходим яркий свет?</span><input type="text" data-q="Свет: зоны яркого света"></label>
+        <label class="field"><span class="fname">В каких зонах нужно мягкое рассеянное освещение?</span><input type="text" data-q="Свет: зоны рассеянного света"></label>
+      </div>
+      <label class="field"><span class="fname">Нужна ли ночная подсветка (коридоры, санузлы, другие помещения)?</span>
+        <input type="text" data-q="Свет: ночная подсветка"></label>
+      <div class="row">
+        <label class="field"><span class="fname">Тип светильников (светодиодные, галогенные)?</span><input type="text" data-q="Свет: тип светильников"></label>
+        <label class="field"><span class="fname">Предпочтения по боковому освещению? Высота бра?</span><input type="text" data-q="Свет: боковое освещение, высота бра"></label>
+      </div>
+      <label class="field"><span class="fname">Требуется ли освещение в закрытых шкафах?</span>
+        <div class="pills">
+          <label class="pill"><input type="radio" name="cablight" data-q="Освещение в закрытых шкафах"><span>Да</span></label>
+          <label class="pill"><input type="radio" name="cablight" data-q="Освещение в закрытых шкафах"><span>Нет</span></label>
+        </div>
+      </label>
+      <label class="field"><span class="fname">Особые пожелания по свету</span><textarea data-q="Свет: особые пожелания"></textarea></label>
+    </fieldset>
+
+    <fieldset><legend class="group-title">Выключатели</legend>
+      <label class="field"><span class="fname">Нужны ли датчики движения в каких-то помещениях?</span><input type="text" data-q="Выключатели: датчики движения"></label>
+      <label class="field"><span class="fname">Хотели бы вы использовать диммеры? В каких помещениях?</span><input type="text" data-q="Выключатели: диммеры"></label>
+      <label class="field"><span class="fname">Предпочтения по высоте выключателей (стандарт 850 мм)?</span><input type="text" data-q="Выключатели: высота"></label>
+      <label class="field"><span class="fname">Нужен ли Мастер-выключатель (отключение всего света одним нажатием)?</span>
+        <div class="pills">
+          <label class="pill"><input type="radio" name="master" data-q="Мастер-выключатель"><span>Да</span></label>
+          <label class="pill"><input type="radio" name="master" data-q="Мастер-выключатель"><span>Нет</span></label>
+        </div>
+      </label>
+      <label class="field"><span class="fname">Нужны ли проходные выключатели (управление светом с нескольких мест)?</span>
+        <div class="pills">
+          <label class="pill"><input type="radio" name="pass" data-q="Проходные выключатели"><span>Да</span></label>
+          <label class="pill"><input type="radio" name="pass" data-q="Проходные выключатели"><span>Нет</span></label>
+        </div>
+      </label>
+    </fieldset>
+
+    <fieldset><legend class="group-title">Инженерия</legend>
+      <label class="field"><span class="fname">Планируете ли приточно-вытяжную систему вентиляции?</span><input type="text" data-q="Вентиляция: приточно-вытяжная система"></label>
+      <label class="field"><span class="fname">Планируете ли кондиционеры? В каких помещениях?</span><input type="text" data-q="Кондиционеры"></label>
+      <label class="field"><span class="fname">Предпочтения по расположению системы вентиляции (в каких помещениях)?</span><input type="text" data-q="Вентиляция: расположение"></label>
+      <label class="field"><span class="fname">Планируете ли звукоизоляцию? В каких помещениях?</span><input type="text" data-q="Звукоизоляция"></label>
+      <label class="field"><span class="fname">Планируете ли теплоизоляцию? В каких помещениях?</span><input type="text" data-q="Теплоизоляция"></label>
+      <label class="field"><span class="fname">Планируете ли тёплый пол? В каких помещениях?</span><input type="text" data-q="Тёплый пол"></label>
+    </fieldset>
+
+    <fieldset><legend class="group-title">Электрика и слаботочные системы</legend>
+      <label class="field"><span class="fname">Есть ли нестандартные бытовые приборы, требующие электрического вывода?</span><input type="text" data-q="Электрика: нестандартные приборы"></label>
+      <label class="field"><span class="fname">Предпочтения по установке электрощита (в какой комнате)?</span><input type="text" data-q="Электрощит: расположение"></label>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Электрика: Видеодомофон"><span>Видеодомофон</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: Система видеонаблюдения"><span>Система видеонаблюдения</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: Охранная сигнализация"><span>Охранная сигнализация</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: Пожарная сигнализация"><span>Пожарная сигнализация</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: Фильтры, измельчители (кухня/ванная)"><span>Фильтры, измельчители на кухне / в ванной</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: USB-розетки"><span>USB-розетки</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: Телефонная розетка"><span>Телефонная розетка</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: Интернет / спутниковое ТВ к телевизорам"><span>Интернет / спутниковое ТВ к телевизорам</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: Акустические розетки"><span>Акустические розетки</span></label>
+        <label class="opt"><input type="checkbox" data-q="Электрика: HDMI"><span>HDMI</span></label>
+      </div>
+      <label class="field" style="margin-top:14px"><span class="fname">Много ли нужно интернет-розеток или основное подключение по Wi-Fi?</span>
+        <input type="text" data-q="Электрика: интернет-розетки / wi-fi"></label>
+    </fieldset>
+  </section>
+
+  <!-- ============ 14. ОБЩИЕ ВОПРОСЫ (ДИЗАЙН) ============ -->
+  <section class="card" data-title="Общие вопросы — дизайн">
+    <span class="sec-num">Раздел 14</span>
+    <h2>Общие вопросы (дизайн)</h2>
+    <p class="hint">Расскажите о себе и своих ожиданиях от проекта.</p>
+
+    <label class="field"><span class="fname">Что для вас важнее: эстетика или практичность?</span>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="aes" data-q="Эстетика или практичность"><span>Эстетика</span></label>
+        <label class="pill"><input type="radio" name="aes" data-q="Эстетика или практичность"><span>Практичность</span></label>
+        <label class="pill"><input type="radio" name="aes" data-q="Эстетика или практичность"><span>Одинаково важно</span></label>
+      </div>
+    </label>
+
+    <fieldset><legend class="group-title">Ваш интерьер — это… <small>(можно отметить несколько)</small></legend>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Интерьер это: Роскошь"><span>Роскошь</span></label>
+        <label class="opt"><input type="checkbox" data-q="Интерьер это: Комфорт"><span>Комфорт</span></label>
+        <label class="opt"><input type="checkbox" data-q="Интерьер это: Уют"><span>Уют</span></label>
+        <label class="opt"><input type="checkbox" data-q="Интерьер это: Креатив"><span>Креатив</span></label>
+        <label class="opt"><input type="checkbox" data-q="Интерьер это: Практичность"><span>Практичность</span></label>
+      </div>
+    </fieldset>
+
+    <label class="field"><span class="fname">Вы готовы прислушиваться к дизайнеру или лучше чётко действовать по ТЗ?</span>
+      <input type="text" data-q="Работа с дизайнером"></label>
+    <label class="field"><span class="fname">Готовы ли вы к экспериментам со стилем?</span>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="exp" data-q="Эксперименты со стилем"><span>Да</span></label>
+        <label class="pill"><input type="radio" name="exp" data-q="Эксперименты со стилем"><span>Скорее да</span></label>
+        <label class="pill"><input type="radio" name="exp" data-q="Эксперименты со стилем"><span>Нет</span></label>
+      </div>
+    </label>
+    <fieldset><legend class="group-title">Какие геометрические формы вам нравятся?</legend>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Формы: Круг"><span>Круг</span></label>
+        <label class="opt"><input type="checkbox" data-q="Формы: Квадрат"><span>Квадрат</span></label>
+        <label class="opt"><input type="checkbox" data-q="Формы: Треугольник"><span>Треугольник</span></label>
+      </div>
+    </fieldset>
+    <div class="row">
+      <label class="field"><span class="fname">Что вас раздражает в интерьере?</span><textarea data-q="Раздражает в интерьере"></textarea></label>
+      <label class="field"><span class="fname">Чего вы опасаетесь в дизайн-проекте?</span><textarea data-q="Опасения по дизайн-проекту"></textarea></label>
+    </div>
+
+    <fieldset><legend class="group-title">Как вам комфортнее общаться?</legend>
+      <div class="grid">
+        <label class="opt"><input type="checkbox" data-q="Общение: Живые встречи"><span>Живые встречи</span></label>
+        <label class="opt"><input type="checkbox" data-q="Общение: Телефон"><span>Телефон</span></label>
+        <label class="opt"><input type="checkbox" data-q="Общение: Почта"><span>Почта</span></label>
+        <label class="opt"><input type="checkbox" data-q="Общение: WhatsApp"><span>WhatsApp</span></label>
+        <label class="opt"><input type="checkbox" data-q="Общение: Telegram"><span>Telegram</span></label>
+        <label class="opt"><input type="checkbox" data-q="Общение: Viber"><span>Viber</span></label>
+      </div>
+    </fieldset>
+    <div class="row">
+      <label class="field"><span class="fname">В какое время вы обычно проверяете почту?</span><input type="text" data-q="Время проверки почты"></label>
+      <label class="field"><span class="fname">В какое время вам удобнее отвечать на звонки?</span><input type="text" data-q="Удобное время для звонков"></label>
+    </div>
+    <label class="field"><span class="fname">Кто принимает финальное решение по дизайну?</span><input type="text" data-q="Финальное решение по дизайну"></label>
+  </section>
+
+  <!-- ============ 15. ОБЩИЕ ВОПРОСЫ (РЕМОНТ) ============ -->
+  <section class="card" data-title="Общие вопросы — ремонт">
+    <span class="sec-num">Раздел 15</span>
+    <h2>Общие вопросы (ремонт)</h2>
+    <p class="hint">Планы, сроки и участие в строительном процессе.</p>
+
+    <label class="field"><span class="fname">У вас есть сформированный бюджет на строительные работы?</span><input type="text" data-q="Бюджет на стройработы"></label>
+    <label class="field"><span class="fname">Принципиальна ли вам национальность строителей?</span>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="nat" data-q="Национальность строителей принципиальна"><span>Да</span></label>
+        <label class="pill"><input type="radio" name="nat" data-q="Национальность строителей принципиальна"><span>Нет</span></label>
+      </div>
+    </label>
+    <label class="field"><span class="fname">Насколько активно вы планируете принимать участие в ремонте?</span><input type="text" data-q="Участие в ремонте"></label>
+    <div class="row">
+      <label class="field"><span class="fname">Когда вы хотели бы приступить к ремонту?</span><input type="text" data-q="Начало ремонта" placeholder="Например: июнь 2026"></label>
+      <label class="field"><span class="fname">Когда вы планируете новоселье?</span><input type="text" data-q="Новоселье" placeholder="Например: декабрь 2026"></label>
+    </div>
+    <label class="field"><span class="fname">Принципиально ли проживание рабочих на объекте?</span>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="live" data-q="Проживание рабочих на объекте"><span>Допустимо</span></label>
+        <label class="pill"><input type="radio" name="live" data-q="Проживание рабочих на объекте"><span>Недопустимо</span></label>
+        <label class="pill"><input type="radio" name="live" data-q="Проживание рабочих на объекте"><span>Не принципиально</span></label>
+      </div>
+    </label>
+    <label class="field"><span class="fname">Кто принимает решение по стройке?</span><input type="text" data-q="Решения по стройке"></label>
+    <label class="field"><span class="fname">Был ли у вас опыт ремонта? Чем вы довольны? А чем нет?</span><textarea data-q="Опыт ремонта"></textarea></label>
+    <label class="field"><span class="fname">Чего вы опасаетесь в ремонте?</span><textarea data-q="Опасения в ремонте"></textarea></label>
+    <label class="field"><span class="fname">Особые пожелания</span><textarea data-q="Ремонт: особые пожелания"></textarea></label>
+  </section>
+
+  <!-- ============ 16. ЗАКУПКИ ============ -->
+  <section class="card" data-title="Общие вопросы — закупки">
+    <span class="sec-num">Раздел 16</span>
+    <h2>Общие вопросы (закупки)</h2>
+    <p class="hint">Бюджет и предпочтения по комплектации объекта.</p>
+
+    <label class="field"><span class="fname">Какой бюджет вы планируете на интерьер «под ключ»?</span><input type="text" data-q="Бюджет под ключ"></label>
+    <p class="hint" style="margin-bottom:10px">Если нет ответа на этот вопрос, ответьте, пожалуйста, на уточняющие вопросы — сколько, по вашему мнению, должны стоить:</p>
+    <div class="row">
+      <label class="field"><span class="fname">Кухня?</span><input type="text" data-q="Ориентировочная цена: Кухня"></label>
+      <label class="field"><span class="fname">Диван?</span><input type="text" data-q="Ориентировочная цена: Диван"></label>
+    </div>
+    <div class="row">
+      <label class="field"><span class="fname">Люстра?</span><input type="text" data-q="Ориентировочная цена: Люстра"></label>
+      <label class="field"><span class="fname">Ванна?</span><input type="text" data-q="Ориентировочная цена: Ванна"></label>
+    </div>
+    <label class="field"><span class="fname">Предпочтения по странам-производителям (Италия, Испания, Россия, Китай, Германия, Америка и т.д.)?</span>
+      <input type="text" data-q="Страны-производители"></label>
+    <label class="field"><span class="fname">Вы хотите закупать предметы из наличия или под заказ?</span>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="stock" data-q="Закупка: из наличия или под заказ"><span>Из наличия</span></label>
+        <label class="pill"><input type="radio" name="stock" data-q="Закупка: из наличия или под заказ"><span>Под заказ</span></label>
+        <label class="pill"><input type="radio" name="stock" data-q="Закупка: из наличия или под заказ"><span>Комбинирую</span></label>
+      </div>
+    </label>
+    <label class="field"><span class="fname">Насколько важно видеть предмет вживую перед заказом?</span>
+      <input type="text" data-q="Важность осмотра вживую"></label>
+    <label class="field"><span class="fname">Кто принимает финальное решение в закупках?</span><input type="text" data-q="Финальное решение в закупках"></label>
+    <label class="field"><span class="fname">Особые пожелания</span><textarea data-q="Закупки: особые пожелания"></textarea></label>
+  </section>
+
+  <!-- ============ 17. ВЫЕЗДЫ ============ -->
+  <section class="card" data-title="Выезды. Авторский надзор">
+    <span class="sec-num">Раздел 17</span>
+    <h2>Выезды. Авторский надзор</h2>
+    <p class="hint">Заполняйте по мере прохождения проекта.</p>
+    <div id="visits"></div>
+    <button type="button" class="btn-add" id="addVisit">+ Добавить выезд</button>
+  </section>
+
+  <!-- ============ DOWNLOAD ============ -->
+  <div class="download-zone">
+    <button class="dl-btn" id="downloadPdf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Скачать ответы
+    </button>
+    <p class="dl-note">Все ваши ответы будут сформированы в PDF-файл и сохранены на компьютер.</p>
+  </div>
+
+</main>
+
+<footer class="copyright">© DoubleDesign — бриф на дизайн интерьера</footer>
+
+<script>
+/* ================= VISITS TABLE ================= */
+const visitsEl = document.getElementById('visits');
+function addVisitRow(){
+  const row = document.createElement('div');
+  row.className = 'visit-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Имя и Фамилия" data-vq="Выезд: Имя и Фамилия">
+    <input type="date" data-vq="Выезд: Число выезда">
+    <input type="text" placeholder="Куда ездили" data-vq="Выезд: Куда ездили">
+    <button type="button" class="btn-del" title="Удалить">×</button>`;
+  row.querySelector('.btn-del').onclick = ()=>{row.remove();updateProgress()};
+  visitsEl.appendChild(row);
+  updateProgress();
+}
+document.getElementById('addVisit').onclick = addVisitRow;
+for(let i=0;i<4;i++) addVisitRow();
+
+/* ================= PROGRESS ================= */
+function trackedFields(){
+  return [...document.querySelectorAll('[data-q]')];
+}
+function updateProgress(){
+  const fields = trackedFields();
+  let done = 0;
+  fields.forEach(el=>{
+    if(el.type==='checkbox' || el.type==='radio'){ if(el.checked) done++; }
+    else if(el.value.trim()) done++;
+  });
+  // radios count as one question per name-group
+  const radioNames = {};
+  fields.filter(e=>e.type==='radio').forEach(e=>{
+    if(!(e.name in radioNames)) radioNames[e.name]=false;
+    if(e.checked) radioNames[e.name]=true;
+  });
+  const total = fields.filter(e=>e.type!=='radio').length + Object.keys(radioNames).length;
+  const doneR = Object.values(radioNames).filter(Boolean).length;
+  const doneOther = fields.filter(e=>e.type!=='radio' && ((e.type==='checkbox'&&e.checked)|| (e.type!=='checkbox' && e.value.trim()))).length;
+  const d = doneOther + doneR;
+  document.getElementById('progFill').style.width = (total? (d/total*100):0)+'%';
+  document.getElementById('progLabel').textContent = `Заполнено: ${d} / ${total}`;
+}
+document.addEventListener('input', updateProgress);
+document.addEventListener('change', updateProgress);
+updateProgress();
+
+/* ================= COLLECT ANSWERS ================= */
+function collectAnswers(){
+  const sections = [...document.querySelectorAll('section.card')];
+  const out = [];
+  sections.forEach(sec=>{
+    const items = [];
+    // checkboxes grouped by data-q prefix
+    sec.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      if(cb.checked) items.push({label:cb.dataset.q.split(': ').pop(), q:cb.dataset.q, val:'✔'});
+    });
+    // radios
+    const seen = new Set();
+    sec.querySelectorAll('input[type=radio]').forEach(r=>{
+      if(seen.has(r.name)) return; seen.add(r.name);
+      const sel = sec.querySelector(`input[name="${r.name}"]:checked`);
+      if(sel) items.push({q:r.dataset.q, val:sel.parentElement.querySelector('span').textContent});
+    });
+    // text / textarea / date
+    sec.querySelectorAll('input[type=text], input[type=email], textarea, input[type=date]').forEach(t=>{
+      if(t.dataset.vq) return;
+      if(t.value.trim()) items.push({q:t.dataset.q, val:t.value.trim()});
+    });
+    if(items.length) out.push({title:sec.dataset.title, items});
+  });
+  // visits
+  const vrows=[...visitsEl.querySelectorAll('.visit-row')]
+    .map(r=>[...r.querySelectorAll('input')].map(i=>i.value.trim()))
+    .filter(v=>v.some(x=>x));
+  if(vrows.length) out.push({title:'Выезды. Авторский надзор', visits:vrows});
+  return out;
+}
+
+/* ================= PDF EXPORT (jsPDF + Cyrillic) ================= */
+(async function loadCyrillicFont(){
+  try{
+    const res = await fetch('PT_Sans-Regular.ttf');
+    if(!res.ok) throw 0;
+    const buf = await res.arrayBuffer();
+    window.__cyrTtf = buf;
+  }catch(e){ window.__cyrTtf = null; }
+})();
+
+document.getElementById('downloadPdf').addEventListener('click', async ()=>{
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:'mm', format:'a4'});
+  const W = 210, H = 297, M = 18;
+  let y = 0;
+
+  // register cyrillic font if available
+  let fontName = 'helvetica';
+  if(window.__cyrTtf){
+    try{
+      const b64 = arrayBufferToBase64(window.__cyrTtf);
+      doc.addFileToVFS('PTSans.ttf', b64);
+      doc.addFont('PTSans.ttf','PTSans','normal');
+      fontName = 'PTSans';
+    }catch(e){}
+  }
+  const warnLatin = fontName==='helvetica';
+
+  function ensure(h){
+    if(y+h > H-16){ doc.addPage(); y = 18; }
+  }
+  function text(str, size, style, color, lh){
+    doc.setFont(fontName, style||'normal');
+    doc.setFontSize(size);
+    doc.setTextColor(...(color||[33,35,42]));
+    const lines = doc.splitTextToSize(str, W-M*2);
+    lines.forEach(l=>{ ensure(lh||size*0.45+2); doc.text(l,M,y); y+=(lh||size*0.45+2); });
+  }
+
+  /* cover */
+  y = 40;
+  doc.setFillColor(33,35,42); doc.rect(0,0,W,8,'F');
+  doc.setFillColor(194,154,91); doc.rect(0,8,W,2,'F');
+  text('DOUBLE DESIGN', 12,'bold',[163,127,69]);
+  y+=4;
+  text('Бриф на дизайн интерьера', 24,'bold');
+  y+=2;
+  text('Дата заполнения: '+new Date().toLocaleDateString('ru-RU'), 11,'normal',[120,120,120]);
+  y+=2;
+  if(warnLatin){
+    text('ВНИМАНИЕ: кириллический шрифт не найден — скачайте index.html вместе с файлом PT_Sans-Regular.ttf.', 10,'normal',[180,60,60]);
+  }
+  doc.addPage(); y = 18;
+
+  const answers = collectAnswers();
+  if(!answers.length){
+    text('Не было отмечено ни одного ответа.', 12,'normal',[120,120,120]);
+  }
+  answers.forEach((sec,i)=>{
+    ensure(20);
+    // section header bar
+    doc.setFillColor(246,243,238); doc.rect(M-4,y,W-(M-4)*2,9,'F');
+    doc.setFillColor(194,154,91); doc.rect(M-4,y,2.2,9,'F');
+    text(`${i+1}. ${sec.title}`, 13,'bold',[33,35,42]);
+    y+=3;
+    if(sec.visits){
+      sec.visits.forEach((v,j)=>{
+        text(`Выезд ${j+1}: ${v[0]||'—'} | ${v[1]||'—'} | ${v[2]||'—'}`, 10.5,'normal',[60,60,60]);
+      });
+    }else{
+      sec.items.forEach(it=>{
+        if(it.val==='✔'){ text('-  '+it.q, 10.5,'normal'); }
+        else{
+          text(it.q+':', 10.5,'bold',[90,90,90]);
+          text(it.val, 10.5,'normal');
+        }
+      });
+    }
+    y+=5;
+  });
+
+  // page numbers
+  const pages = doc.getNumberOfPages();
+  for(let p=1;p<=pages;p++){
+    doc.setPage(p);
+    doc.setFont(fontName,'normal'); doc.setFontSize(8.5); doc.setTextColor(150,150,150);
+    doc.text(`DoubleDesign · Бриф   —   стр. ${p} из ${pages}`, W/2, H-8, {align:'center'});
+  }
+
+  doc.save('DoubleDesign_Бриф_ответы.pdf');
+});
+
+function arrayBufferToBase64(buf){
+  let binary=''; const bytes=new Uint8Array(buf);
+  for(let i=0;i<bytes.length;i++) binary+=String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+</script>
+</body>
+</html>
